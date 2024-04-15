@@ -28,23 +28,33 @@ const ReviewsOut = props => {
     }
   }
 
-  const {imgUrl, userName, companyName, description} = reviewsList[indexNumber]
+  const {imgUrl, username, companyName, description} = reviewsList[indexNumber]
 
   return (
     <div className="reviews-container">
-      <button className="button" type="button" onClick={leftArrow}>
+      <button
+        className="button"
+        type="button"
+        onClick={leftArrow}
+        testid={leftArrow}
+      >
         <img
           src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png"
           alt="left arrow"
         />
       </button>
       <div className="reviews">
-        <img className="image" src={imgUrl} alt={userName} />
-        <h3 className="name">{userName}</h3>
+        <img className="image" src={imgUrl} alt={username} />
+        <h3 className="name">{username}</h3>
         <p>{companyName}</p>
         <p className="paragraph">{description}</p>
       </div>
-      <button className="button" type="button" onClick={rightArrow}>
+      <button
+        className="button"
+        type="button"
+        onClick={rightArrow}
+        testid={rightArrow}
+      >
         <img
           src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png"
           alt="right arrow"
