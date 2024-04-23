@@ -3,87 +3,102 @@ import {Component} from 'react'
 import './index.css'
 
 const ReviewsOut = props => {
-  const {reviewsList, indexElement, indexNumber} = props
+  const {
+    reviewsDetailsList,
+    updateWithRightClick,
+    updateWithLeftClick,
+    usernameDetails,
+  } = props
 
-  let leftcount = 1
+  const reviewsItem = reviewsDetailsList.filter(
+    eachItem => usernameDetails === eachItem.username,
+  )
+  console.log(reviewsItem)
+  const indexDetails = reviewsDetailsList.indexOf(...reviewsItem)
+
+  const review = reviewsDetailsList[indexDetails]
+  const {imgUrl, username, companyName, description} = review
+
   const leftArrow = () => {
-    if (indexNumber === 0) {
-      indexElement(indexNumber)
-    } else {
-      const newIndex = indexNumber - leftcount
-
-      indexElement(newIndex)
-      leftcount -= 1
+    let newReview = ''
+    if (indexDetails !== 0) {
+      newReview = reviewsDetailsList[indexDetails - 1]
     }
+    updateWithLeftClick(newReview.username)
   }
 
-  let rightcount = 1
   const rightArrow = () => {
-    if (indexNumber === reviewsList.length - 1) {
-      indexElement(indexNumber)
-    } else {
-      const newIndex = indexNumber + rightcount
-      indexElement(newIndex)
-      rightcount += 1
+    let newReview = ''
+    if (indexDetails !== reviewsDetailsList.length - 1) {
+      newReview = reviewsDetailsList[indexDetails + 1]
     }
+    updateWithRightClick(newReview.username)
   }
-
-  const {imgUrl, username, companyName, description} = reviewsList[indexNumber]
 
   return (
-    <div className="reviews-container">
-      <button
-        className="button"
-        type="button"
-        onClick={leftArrow}
-        testid={leftArrow}
-      >
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png"
-          alt="left arrow"
-        />
-      </button>
-      <div className="reviews">
-        <img className="image" src={imgUrl} alt={username} />
-        <h3 className="name">{username}</h3>
-        <p>{companyName}</p>
-        <p className="paragraph">{description}</p>
+    <li className="reviews">
+      <img className="image" src={imgUrl} alt={username} />
+      <div className="username-button-container">
+        <button
+          className="button"
+          type="button"
+          onClick={leftArrow}
+          date-testid={leftArrow}
+        >
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png"
+            alt="left arrow"
+          />
+        </button>
+        <p className="name">{username}</p>
+        <button
+          className="button"
+          type="button"
+          onClick={rightArrow}
+          date-testid={rightArrow}
+        >
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png"
+            alt="right arrow"
+          />
+        </button>
       </div>
-      <button
-        className="button"
-        type="button"
-        onClick={rightArrow}
-        testid={rightArrow}
-      >
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png"
-          alt="right arrow"
-        />
-      </button>
-    </div>
+      <p>{companyName}</p>
+      <p className="paragraph">{description}</p>
+    </li>
   )
 }
 
 class ReviewsCarousel extends Component {
-  state = {indexNumber: 0}
+  state = {username: 'Wade Warren'}
 
-  indexElement = newIndex => {
-    this.setState({indexNumber: newIndex})
+  updateWithLeftClick = usernameId => {
+    if (usernameId !== undefined) {
+      this.setState({username: usernameId})
+    }
+  }
+
+  updateWithRightClick = usernameId => {
+    if (usernameId !== undefined) {
+      this.setState({username: usernameId})
+    }
   }
 
   render() {
-    const {indexNumber} = this.state
     const {reviewsList} = this.props
+    const {username} = this.state
+
     return (
-      <div className="bg-contaienr">
+      <div className="bg-container">
         <h1 className="header">Reviews</h1>
-        <div className="reviews-contaienr">
+        <ul className="reviewItem-container">
           <ReviewsOut
-            reviewsList={reviewsList}
-            indexElement={this.indexElement}
-            indexNumber={indexNumber}
+            updateWithRightClick={this.updateWithRightClick}
+            updateWithLeftClick={this.updateWithLeftClick}
+            reviewsDetailsList={reviewsList}
+            usernameDetails={username}
           />
-        </div>
+        </ul>
       </div>
     )
   }
